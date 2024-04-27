@@ -18,10 +18,33 @@ fi
 # Verificar se a VM já existe
 if az vm show --resource-group $resource_group --name $vm_name &>/dev/null; then
   echo "A VM $vm_name já existe no grupo de recursos $resource_group."
-  echo "Atualizando a VM com o script de inicialização baixado..."
+else
+  echo "A VM $vm_name não existe no grupo de recursos $resource_group. Criando..."
+
+  # Criar a VM no Azure
+  az vm create \
+    --resource-group $resource_group \
+    --name $vm_name \
+    --image Ubuntu2204 \
+    --admin-username iesodias \
+    --admin-password "MinhaSenhaieso123!" \
+    --size Standard_B1s \
+    --no-wait
+
+  # Adicionar um atraso de 60 segundos após a criação da VM
+  sleep 60
 
   # Baixar o script de inicialização do link
   curl -sSL https://raw.githubusercontent.com/iesodias/startup-setup/main/config_file_startup/startupscript.sh -o startupscript.sh
+
+  # Exibir o conteúdo do script baixado (apenas para debug)
+  cat startupscript.sh
+
+  # Executar o script de inicialização baixado (apenas para debug)
+  bash startupscript.sh
+
+  # Exibir mensagem após a execução do script (apenas para debug)
+  echo "Script startupscript.sh executado."
 
   # Atualizar a VM com o script de inicialização baixado
   az vm extension set \
@@ -33,47 +56,14 @@ if az vm show --resource-group $resource_group --name $vm_name &>/dev/null; then
     --no-wait
 
   echo "Atualização da VM com o script de inicialização concluída."
-
-  # Obter o endereço IP público da VM
-  ip_address=$(az vm show \
-    --resource-group $resource_group \
-    --name $vm_name \
-    --show-details \
-    --query 'publicIps' \
-    --output tsv)
-
-  echo "Endereço IP da VM: $ip_address"
-else
-  echo "A VM $vm_name não existe no grupo de recursos $resource_group. Continuando com a criação..."
-
-  # Baixar o script de inicialização do link
-  curl -sSL https://raw.githubusercontent.com/iesodias/startup-setup/main/config_file_startup/startupscript.sh -o startupscript.sh
-
-  # Verificar se o download foi bem-sucedido
-  if [ $? -eq 0 ]; then
-    echo "Download do script de inicialização concluído."
-    
-    # Criar a VM no Azure com o script de inicialização
-    az vm create \
-      --resource-group $resource_group \
-      --name $vm_name \
-      --image Ubuntu2204 \
-      --admin-username iesodias \
-      --admin-password "MinhaSenhaieso123!" \
-      --size Standard_B1s \
-      --custom-data startupscript.sh \
-      --no-wait
-
-    # Obter o endereço IP público da VM
-    ip_address=$(az vm show \
-      --resource-group $resource_group \
-      --name $vm_name \
-      --show-details \
-      --query 'publicIps' \
-      --output tsv)
-
-    echo "Endereço IP da VM: $ip_address"
-  else
-    echo "Erro ao baixar o script de inicialização."
-  fi
 fi
+
+# Obter o endereço IP público da VM
+ip_address=$(az vm show \
+  --resource-group $resource_group \
+  --name $vm_name \
+  --show-details \
+  --query 'publicIps' \
+  --output tsv)
+
+echo "Endereço IP da VM: $ip_address"
