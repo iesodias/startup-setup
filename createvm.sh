@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # Nome do grupo de recursos e da VM
-resource_group="mdc-vm-rg"
+resource_group="mdc-vm-rg1"
 vm_name="mdc-vm"
+script_url="https://raw.githubusercontent.com/iesodias/startup-setup/main/config_file_startup/startupscript.sh"
 
 # Verificar se o grupo de recursos já existe
 if ! az group show --name $resource_group &>/dev/null; then
@@ -21,7 +22,7 @@ if az vm show --resource-group $resource_group --name $vm_name &>/dev/null; then
 else
   echo "A VM $vm_name não existe no grupo de recursos $resource_group. Criando..."
 
-  # Criar a VM no Azure
+  # Criar a VM no Azure sem execução do script de inicialização
   az vm create \
     --resource-group $resource_group \
     --name $vm_name \
@@ -34,34 +35,19 @@ else
   # Adicionar um atraso de 60 segundos após a criação da VM
   sleep 60
 
-  # Baixar o script de inicialização do link
-  curl -sSL https://raw.githubusercontent.com/iesodias/startup-setup/main/config_file_startup/startupscript.sh -o startupscript.sh
-
-  # Exibir o conteúdo do script baixado (apenas para debug)
-  cat startupscript.sh
-
-  # Executar o script de inicialização baixado (apenas para debug)
-  bash startupscript.sh
-
-  # Exibir mensagem após a execução do script (apenas para debug)
-  echo "Script startupscript.sh executado."
-
-  # Atualizar a VM com o script de inicialização baixado
-  az vm extension set \
-    --resource-group $resource_group \
-    --vm-name $vm_name \
-    --name customScript \
-    --publisher Microsoft.Azure.Extensions \
-    --settings "{\"fileUris\": [\"https://raw.githubusercontent.com/iesodias/startup-setup/main/config_file_startup/startupscript.sh\"], \"commandToExecute\": \"bash startupscript.sh\"}" \
-    --no-wait
-
-  echo "Atualização da VM com o script de inicialização concluída."
-
-  # Reiniciar a VM
-  az vm restart --resource-group $resource_group --name $vm_name --no-wait --force
-
-  echo "Reiniciando a VM..."
+  echo "Criação da VM concluída."
 fi
+
+# Adicionar a extensão customScript para executar o script de inicialização
+az vm extension set \
+  --resource-group $resource_group \
+  --vm-name $vm_name \
+  --name customScript \
+  --publisher Microsoft.Azure.Extensions \
+  --settings "{\"fileUris\": [\"$script_url\"], \"commandToExecute\": \"bash startupscript.sh\"}" \
+  --no-wait
+
+echo "Adicionada a extensão customScript para execução do script de inicialização após a criação da VM."
 
 # Obter o endereço IP público da VM
 ip_address=$(az vm show \

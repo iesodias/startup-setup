@@ -36,3 +36,6 @@ sleep 10
 # Instalar Ansible
 sudo apt-get install -y ansible
 
+# Reboot
+
+sudo reboot
