@@ -28,9 +28,11 @@ unzip terraform_1.1.0_linux_amd64.zip
 sudo mv terraform /usr/local/bin/
 rm terraform_1.1.0_linux_amd64.zip
 
-# Instalar Ansible
-sudo apt-get install -y ansible
-
 # Instalar kubectl
 sudo snap install kubectl --classic
 sleep 10
+
+
+# Instalar Ansible
+sudo apt-get install -y ansible
+

@@ -34,9 +34,3 @@ sudo apt-get install -y ansible
 # Instalar kubectl
 sudo snap install kubectl --classic
 sleep 10
-
-# Permitir reboot sem senha
-echo "$USER ALL=(ALL) NOPASSWD: /sbin/reboot" | sudo tee /etc/sudoers.d/reboot_nopasswd
-
-# Reiniciar a máquina
-sudo reboot

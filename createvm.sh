@@ -58,7 +58,7 @@ else
   echo "Atualização da VM com o script de inicialização concluída."
 
   # Reiniciar a VM
-  az vm restart --resource-group $resource_group --name $vm_name --no-wait
+  az vm restart --resource-group $resource_group --name $vm_name --no-wait --force
 
   echo "Reiniciando a VM..."
 fi
@@ -72,4 +72,3 @@ ip_address=$(az vm show \
   --output tsv)
 
 echo "Endereço IP da VM: $ip_address"
-
