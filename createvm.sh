@@ -56,6 +56,11 @@ else
     --no-wait
 
   echo "Atualização da VM com o script de inicialização concluída."
+
+  # Reiniciar a VM
+  az vm restart --resource-group $resource_group --name $vm_name --no-wait
+
+  echo "Reiniciando a VM..."
 fi
 
 # Obter o endereço IP público da VM
@@ -67,3 +72,4 @@ ip_address=$(az vm show \
   --output tsv)
 
 echo "Endereço IP da VM: $ip_address"
+

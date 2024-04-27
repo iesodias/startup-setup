@@ -2,12 +2,15 @@
 
 # Atualizar pacotes
 sudo apt-get update
+sleep 10
 
 # Instalar Docker
 sudo apt-get install -y docker.io
+sleep 10
 
 # Adicionar o usuário ao grupo Docker
 sudo usermod -aG docker $USER
+sleep 10
 
 # Reiniciar o Docker
 sudo systemctl restart docker
@@ -29,7 +32,11 @@ rm terraform_1.1.0_linux_amd64.zip
 sudo apt-get install -y ansible
 
 # Instalar kubectl
-sudo apt-get install -y kubectl
+sudo snap install kubectl --classic
+sleep 10
+
+# Permitir reboot sem senha
+echo "$USER ALL=(ALL) NOPASSWD: /sbin/reboot" | sudo tee /etc/sudoers.d/reboot_nopasswd
 
 # Reiniciar a máquina
 sudo reboot
