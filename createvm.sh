@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Nome do grupo de recursos e da VM
-resource_group="mdc-vm-rg1"
+resource_group="mdc-vm-rg"
 vm_name="mdc-vm"
 script_url="https://raw.githubusercontent.com/iesodias/startup-setup/main/config_file_startup/startupscript.sh"
 
