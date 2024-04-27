@@ -1,15 +1,17 @@
+# Setup Virtual Machine on Azure
+
 1. Clone the Repository
 First, clone the repository to your local machine using the following command:
-
 ```bash
 git clone https://github.com/iesodias/startup-setup.git
 ```
 2. Install Azure CLI
 If you don't already have Azure CLI installed on your machine, follow the installation instructions according to your operating system:
 
-For Windows: Install Azure CLI on Windows
-For macOS: Install Azure CLI on macOS
-For Linux: Install Azure CLI on Linux
+- For Windows: [Install Azure CLI on Windows](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows)
+- For macOS: [Install Azure CLI on macOS](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-macos)
+- For Linux: [Install Azure CLI on Linux](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-linux)
+
 3. Log in to Azure CLI
 After installing Azure CLI, open your terminal and log in to your Azure account with the command:
 ```bash
