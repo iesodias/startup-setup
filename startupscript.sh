@@ -6,6 +6,12 @@ sudo apt-get update
 # Instalar Docker
 sudo apt-get install -y docker.io
 
+# Adicionar o usuário ao grupo Docker
+sudo usermod -aG docker $USER
+
+# Reiniciar o Docker
+sudo systemctl restart docker
+
 # Instalar Azure CLI
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 

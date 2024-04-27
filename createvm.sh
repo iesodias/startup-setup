@@ -8,6 +8,9 @@ vm_name="mdc-vm"
 if ! az group show --name $resource_group &>/dev/null; then
   echo "O grupo de recursos $resource_group não existe. Criando..."
   az group create --name $resource_group --location eastus
+
+  # Adicionar um atraso de 10 segundos após a criação do grupo de recursos
+  sleep 10
 else
   echo "O grupo de recursos $resource_group já existe."
 fi
@@ -30,6 +33,16 @@ if az vm show --resource-group $resource_group --name $vm_name &>/dev/null; then
     --no-wait
 
   echo "Atualização da VM com o script de inicialização concluída."
+
+  # Obter o endereço IP público da VM
+  ip_address=$(az vm show \
+    --resource-group $resource_group \
+    --name $vm_name \
+    --show-details \
+    --query 'publicIps' \
+    --output tsv)
+
+  echo "Endereço IP da VM: $ip_address"
 else
   echo "A VM $vm_name não existe no grupo de recursos $resource_group. Continuando com a criação..."
 
