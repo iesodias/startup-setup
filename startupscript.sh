@@ -27,3 +27,9 @@ rm terraform_1.1.0_linux_amd64.zip
 
 # Instalar Ansible
 sudo apt-get install -y ansible
+
+# Instalar kubectl
+sudo apt-get install -y kubectl
+
+# Reiniciar a máquina
+sudo reboot
